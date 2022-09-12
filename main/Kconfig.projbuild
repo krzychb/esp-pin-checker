@@ -1,0 +1,131 @@
+menu "Pin Checker Configuration"
+
+    choice CHIP_SERIES
+        prompt "Chip Series"
+        default ESP32_SERIES
+
+        config ESP32_SERIES
+            bool "ESP32 Chip Series"
+
+        config ESP32_S2_SERIES
+            bool "ESP32-S2 Chip Series"
+        
+        config ESP32_C3_SERIES
+            bool "ESP32-C3 Chip Series"
+            
+    endchoice
+
+    choice ESP32_DEVELOPMENT_BOARDS
+        prompt "ESP32 Development Boards"
+        depends on ESP32_SERIES
+        default ESP32_DEVKITC
+
+        config ESP32_DEVKITC
+            bool "ESP32-DevKitC"
+            help
+                ESP32-DevKitC development board.
+
+                Pads to skip testing:
+                0                        // Strapping circuit
+                1 3                      // TXD, RXD
+                6 7 8 9 10 11            // SPI flash
+                20 24 28 29 30 31        // Not supported
+                34 35 36 37 38 39        // No WPD / WPU circuit
+
+        config ESP_WROVER_KIT
+            bool "ESP-WROVER-KIT"
+            help
+                ESP-WROVER-KIT development board.
+
+                Pads to skip testing:
+                0                        // Strapping circuit
+                1 3                      // TXD, RXD
+                6 7 8 9 10 11            // SPI flash
+                16 17                    // PSRAM
+                20 24 28 29 30 31        // Not supported
+                34 35 36 37 38 39        // No WPD / WPU circuit
+
+        config ESP32_PICO_KIT
+            bool "ESP32-PICO-KIT"
+            help
+                ESP32-PICO-KIT development board.
+
+                Pads to skip testing:
+                0                        // Strapping circuit
+                1 3                      // TXD, RXD
+                6 7 8 9 10 11            // SPI flash
+                16 17                    // PSRAM
+                24 28 29 30 31           // Not supported
+                34 35 36 37 38 39        // No WPD / WPU circuit
+                
+        endchoice
+
+        choice ESP32_S2_DEVELOPMENT_BOARDS
+            prompt "ESP32-S2 Development Boards"
+            depends on ESP32_S2_SERIES
+            default ESP32_S2_DEVKITC_1
+    
+            config ESP32_S2_SAOLA_1
+                bool "ESP32-S2-Saola-1"
+                help
+                    ESP32-S2-Saola-1 development board.
+    
+                    Pads to skip testing:
+                    0                       // Strapping circuit
+                    18                      // Addressable LED
+                    22 23 24 25             // Not supported
+                    26 27 28 29 30 31 32    // SPI flash
+                    46                      // No WPU circuit
+
+            config ESP32_S2_DEVKITC_1
+                bool "ESP32-S2-DevKitC-1"
+                help
+                    ESP32-S2-DevKitC-1 development board.
+    
+                    Pads to skip testing:
+                    0                       // Strapping circuit
+                    18                      // Addressable LED
+                    22 23 24 25             // Not supported
+                    26 27 28 29 30 31 32    // SPI flash
+                    46                      // No WPU circuit
+                        
+        endchoice
+
+        choice ESP32_C3_DEVELOPMENT_BOARDS
+            prompt "ESP32-C3 Development Boards"
+            depends on ESP32_C3_SERIES
+            default ESP32_C3_DEVKITM_1
+            
+            config ESP32_C3_DEVKITM_1
+                bool "ESP32-C3-DevKitM-1"
+                help
+                    ESP32-C3-DevKitM-1 development board.
+    
+                    Pads to skip testing:
+                    8                       // Addressable LED
+                    9                       // Strapping circuit
+                    12 13 14 15 16 17       // SPI flash
+                    
+            config ESP32_C3_DEVKITC_02
+                bool "ESP32-C3-DevKitC-02"
+                help
+                    ESP32-C3-DevKitC-02 development board.
+    
+                    Pads to skip testing:
+                    8                       // Addressable LED
+                    9                       // Strapping circuit
+                    12 13 14 15 16 17       // SPI flash
+                    
+            endchoice
+
+    config SKIP_PADS
+        string
+        default "0 1 3 6 7 8 9 10 11       20 24 28 29 30 31 34 35 36 37 38 39" if ESP32_DEVKITC
+        default "0 1 3 6 7 8 9 10 11 16 17 20 24 28 29 30 31 34 35 36 37 38 39" if ESP_WROVER_KIT
+        default "0 1 3 6 7 8 9 10 11          24 28 29 30 31 34 35 36 37 38 39" if ESP32_PICO_KIT
+        default "0 18 22 23 24 25 26 27 28 29 30 31 32 46" if ESP32_S2_SAOLA_1
+        default "0 18 22 23 24 25 26 27 28 29 30 31 32 46" if ESP32_S2_DEVKITC_1
+        default "8 9 12 13 14 15 16 17" if ESP32_C3_DEVKITM_1
+        default "8 9 12 13 14 15 16 17" if ESP32_C3_DEVKITC_02
+
+endmenu
